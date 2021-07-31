@@ -1,0 +1,28 @@
+﻿  TowerOfHanoi.cpp
+  Towers.cpp
+D:\Desktop\Towers\Towers\TowerOfHanoi.cpp(56,19): warning C4018: '<': signed/unsigned mismatch
+D:\Desktop\Towers\Towers\TowerOfHanoi.cpp(53): message : while compiling class template member function 'T TowerOfHanoi<T>::getMaxFromVector(std::vector<T,std::allocator<T>>)'
+          with
+          [
+              T=int
+          ]
+D:\Desktop\Towers\Towers\TowerOfHanoi.cpp(73): message : see reference to function template instantiation 'T TowerOfHanoi<T>::getMaxFromVector(std::vector<T,std::allocator<T>>)' being compiled
+          with
+          [
+              T=int
+          ]
+D:\Desktop\Towers\Towers\TowerOfHanoi.cpp(66): message : while compiling class template member function 'int TowerOfHanoi<int>::getMostElements(void)'
+D:\Desktop\Towers\Towers\TowerOfHanoi.cpp(80): message : see reference to function template instantiation 'int TowerOfHanoi<int>::getMostElements(void)' being compiled
+D:\Desktop\Towers\Towers\TowerOfHanoi.cpp(11): message : while compiling class template member function 'void TowerOfHanoi<int>::pushLeft(T)'
+          with
+          [
+              T=int
+          ]
+D:\Desktop\Towers\Towers\Towers.cpp(12): message : see reference to function template instantiation 'void TowerOfHanoi<int>::pushLeft(T)' being compiled
+          with
+          [
+              T=int
+          ]
+D:\Desktop\Towers\Towers\Towers.cpp(10): message : see reference to class template instantiation 'TowerOfHanoi<int>' being compiled
+  Generating Code...
+  Towers.vcxproj -> D:\Desktop\Towers\Debug\Towers.exe
