@@ -1,6 +1,6 @@
-
 #include <vector>
 #include <iostream>
+#include <random>
 
 #include "TowerOfHanoi.h"
 #include "Stack.h"
@@ -209,5 +209,39 @@ void TowerOfHanoi<T>::swap(int iFrom, int iTo) {
 		}
 		return;
 	}
+}
+template <class T>
+int TowerOfHanoi<T>::getRandomInt(int lB, int uB) {
+	std::random_device rd;
+	std::mt19937 rng(rd());
+	std::uniform_int_distribution<int> uni(lB,uB);
 
+	return uni(rng);
+}
+
+template <class T>
+void TowerOfHanoi<T>::randomizeInt(int maxElems,int lB,int uB) {
+
+	// randomize each tower
+	std::random_device rd;
+	std::mt19937 rng(rd());
+	
+	// get a random amount of elements for each stack
+	std::uniform_int_distribution<int> uni(0, maxElems);
+	
+	int maxElemL{ uni(rng) };
+	int maxElemM{ uni(rng) };
+	int maxElemR{ uni(rng) };
+
+
+	// get random entries for each stack
+	for (int i = 0; i < maxElemL;++i) {
+		_leftStack.push(getRandomInt(lB,uB));
+	}
+	for (int i = 0; i < maxElemM;++i) {
+		_middleStack.push(getRandomInt(lB,uB));
+	}
+	for (int i = 0; i < maxElemR;++i) {
+		_rightStack.push(getRandomInt(lB,uB));
+	}
 }

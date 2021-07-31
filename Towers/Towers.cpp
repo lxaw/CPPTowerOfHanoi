@@ -8,24 +8,9 @@
 int main()
 {
 	TowerOfHanoi<int> t;
-	for (int i = 0;i < 10;++i) {
-		t.pushLeft(i);
-	}
-	for (int i = 0;i < 4;++i) {
-		t.pushMiddle(i);
-	}
-	for (int i = 0;i < 8;++i) {
-		t.pushRight(i);
-	}
-
+	t.randomizeInt(5, 0, 5);
 	t.printTowerOfHanoi();
 
-	for (int i = 0;i < 3;i++) {
-		for (int j = i;j < 3;j++) {
-			t.swap(i, j);
-			t.printTowerOfHanoi();
-		}
-	}
 
 }
 

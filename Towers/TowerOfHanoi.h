@@ -24,11 +24,16 @@ public:
 
 	void printTowerOfHanoi();
 
-	// pass reference
+	/*
+	Stack the top values from two stacks
+	*/
 	void swapStack(Stack<T>& s0, Stack<T>& s1);
 
-
 	void swap(int iFrom, int iTo);
+
+
+	void randomizeInt(int maxElems,int lB,int uB);
+	int getRandomInt(int lB, int uB);
 
 	void sort();
 
