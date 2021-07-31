@@ -20,31 +20,12 @@ int main()
 
 	t.printTowerOfHanoi();
 
-	TowerOfHanoi<int> t1;
-
-	for (int i = 0;i < 5;++i) {
-		t1.pushLeft(i);
+	for (int i = 0;i < 3;i++) {
+		for (int j = i;j < 3;j++) {
+			t.swap(i, j);
+			t.printTowerOfHanoi();
+		}
 	}
-	for (int i = 0;i < 12;++i) {
-		t1.pushMiddle(i);
-	}
-	for (int i = 0;i < 7;++i) {
-		t1.pushRight(i);
-	}
-	t1.printTowerOfHanoi();
-
-	TowerOfHanoi<int> t2;
-
-	for (int i = 0;i < 5;++i) {
-		t2.pushLeft(i);
-	}
-	for (int i = 0;i < 7;++i) {
-		t2.pushMiddle(i);
-	}
-	for (int i = 0;i < 9;++i) {
-		t2.pushRight(i);
-	}
-	t2.printTowerOfHanoi();
 
 }
 

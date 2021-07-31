@@ -172,5 +172,42 @@ void TowerOfHanoi<T>::printTowerOfHanoi() {
 	free(m);
 	free(r);
 }
-// sorting the towers
 
+template <class T>
+void TowerOfHanoi<T>::swapStack(Stack<T>& stack0, Stack<T>& stack1) {
+	// 0 -> 1, 1 -> 0
+	T temp0 = stack0.peek();
+	T temp1 = stack1.peek();
+	stack0.pop();
+	stack1.pop();
+
+	stack0.push(temp1);
+	stack1.push(temp0);
+}
+
+
+template <class T>
+void TowerOfHanoi<T>::swap(int iFrom, int iTo) {
+	if (iFrom == iTo) {
+		return;
+	}
+	else if (iFrom == 0 && iTo == 1 || iFrom == 1 && iTo == 0) {
+		if (_leftStack.hasMore() && _middleStack.hasMore()) {
+			swapStack(_leftStack, _middleStack);
+		}
+		return;
+	}
+	else if (iFrom == 0 && iTo == 2 || iFrom == 2 && iTo == 0) {
+		if (_leftStack.hasMore() && _rightStack.hasMore()) {
+			swapStack(_leftStack, _rightStack);
+		}
+		return;
+	}
+	else if (iFrom == 1 && iTo == 2 || iFrom == 2 && iTo == 1) {
+		if (_middleStack.hasMore() && _rightStack.hasMore()) {
+			swapStack(_middleStack, _rightStack);
+		}
+		return;
+	}
+
+}

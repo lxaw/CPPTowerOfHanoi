@@ -24,6 +24,12 @@ public:
 
 	void printTowerOfHanoi();
 
+	// pass reference
+	void swapStack(Stack<T>& s0, Stack<T>& s1);
+
+
+	void swap(int iFrom, int iTo);
+
 	void sort();
 
 private:

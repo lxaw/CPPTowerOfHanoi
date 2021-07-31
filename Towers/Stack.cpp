@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "Stack.h"
+#include "Stack.h "
 
 template <class T>
 void Stack<T>::push(T aData) {
@@ -37,6 +37,21 @@ void Stack<T>::pop() {
 
 	_elements -= 1;
 }
+template <class T>
+T Stack<T>::peek() {
+	//return the top element
+	// should call with "hasMore"
+	return _top->_data;
+}
+
+template <class T>
+bool Stack<T>::hasMore() {
+	if (_top != nullptr) {
+		return true;
+	}
+	return false;
+}
+
 
 template <class T>
 void Stack<T>::printTopDown() {

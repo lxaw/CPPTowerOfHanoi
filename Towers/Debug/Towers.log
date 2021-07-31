@@ -11,8 +11,16 @@ D:\Desktop\Towers\Towers\TowerOfHanoi.cpp(73): message : see reference to functi
           [
               T=int
           ]
-D:\Desktop\Towers\Towers\TowerOfHanoi.cpp(66): message : while compiling class template member function 'int TowerOfHanoi<int>::getMostElements(void)'
-D:\Desktop\Towers\Towers\TowerOfHanoi.cpp(80): message : see reference to function template instantiation 'int TowerOfHanoi<int>::getMostElements(void)' being compiled
+D:\Desktop\Towers\Towers\TowerOfHanoi.cpp(177): message : while compiling class template member function 'void TowerOfHanoi<int>::swapStack(Stack<T> &,Stack<T> &)'
+          with
+          [
+              T=int
+          ]
+D:\Desktop\Towers\Towers\TowerOfHanoi.cpp(196): message : see reference to function template instantiation 'void TowerOfHanoi<int>::swapStack(Stack<T> &,Stack<T> &)' being compiled
+          with
+          [
+              T=int
+          ]
 D:\Desktop\Towers\Towers\TowerOfHanoi.cpp(11): message : while compiling class template member function 'void TowerOfHanoi<int>::pushLeft(T)'
           with
           [

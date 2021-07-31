@@ -13,6 +13,8 @@ public:
 	void printTopDown();
 	T peek();
 
+	bool hasMore();
+
 	int _elements = 0;
 	Node<T>* _top = nullptr;
 };
