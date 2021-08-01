@@ -24,12 +24,13 @@ public:
 
 	void printTowerOfHanoi();
 
-	/*
-	Stack the top values from two stacks
-	*/
-	void swapStack(Stack<T>& s0, Stack<T>& s1);
-
 	void swap(int iFrom, int iTo);
+
+	/*
+	Move element from one stack to another, no swap.
+	*/
+	void move(int iFrom, int iTo);
+
 
 
 	void randomizeInt(int maxElems,int lB,int uB);
@@ -41,6 +42,20 @@ private:
 	Stack<T> _leftStack;
 	Stack<T> _middleStack;
 	Stack<T> _rightStack;
+
+	/*
+	Swap the top values from two stacks
+	*/
+	void swapStack(Stack<T>& s0, Stack<T>& s1);
+	/*
+	Push val from one stack onto other
+	*/
+	void peekPopPush(Stack<T>& sFrom, Stack<T>& sTo);
+
+	/*
+	Recursive sort
+	*/
+	void sort(T targetVal);
 
 	int getMostElements();
 	T getMaxFromVector(std::vector<T> aVec);

@@ -97,19 +97,19 @@ void TowerOfHanoi<T>::printTowerOfHanoi() {
 			// print middle
 			if (m != nullptr && m->_level == l->_level) {
 				std::cout << m->_data << " ";
-				m = m -> _link;
+				m = m -> _prev;
 			}
 			else {
 				std::cout << "  ";
 			}
 			if (r != nullptr && r->_level == l->_level) {
 				std::cout << r->_data << "\n";
-				r = r->_link;
+				r = r->_prev;
 			}
 			else {
 				std::cout << "\n";
 			}
-			l = l->_link;
+			l = l->_prev;
 		}
 		std::cout << "\n";
 	}
@@ -120,7 +120,7 @@ void TowerOfHanoi<T>::printTowerOfHanoi() {
 			// print left
 			if (l != nullptr && l->_level == m->_level) {
 				std::cout << l->_data << " ";
-				l = l->_link;
+				l = l->_prev;
 			}
 			else {
 				std::cout << "  ";
@@ -131,13 +131,13 @@ void TowerOfHanoi<T>::printTowerOfHanoi() {
 			// print right
 			if (r != nullptr && r->_level == m->_level) {
 				std::cout << r->_data << "\n";
-				r = r->_link;
+				r = r->_prev;
 			}
 			else {
 				std::cout << "\n";
 			}
 			
-			m = m->_link;
+			m = m->_prev;
 		}
 		std::cout << "\n";
 
@@ -149,7 +149,7 @@ void TowerOfHanoi<T>::printTowerOfHanoi() {
 			// print left
 			if (l != nullptr && l->_level == r->_level) {
 				std::cout << l->_data << " ";
-				l = l->_link;
+				l = l->_prev;
 			}
 			else {
 				std::cout << "  ";
@@ -157,14 +157,14 @@ void TowerOfHanoi<T>::printTowerOfHanoi() {
 			// print mid
 			if (m != nullptr && m->_level == r->_level) {
 				std::cout << m->_data << " ";
-				m = m->_link;
+				m = m->_prev;
 			}
 			else {
 				std::cout << "  ";
 			}
 			std::cout << r->_data << "\n";
 
-			r = r->_link;
+			r = r->_prev;
 		}
 	}
 
@@ -244,4 +244,56 @@ void TowerOfHanoi<T>::randomizeInt(int maxElems,int lB,int uB) {
 	for (int i = 0; i < maxElemR;++i) {
 		_rightStack.push(getRandomInt(lB,uB));
 	}
+}
+
+template<class T>
+void TowerOfHanoi<T>::peekPopPush(Stack<T>& sFrom, Stack<T>& sTo) {
+	if (sFrom.hasMore()) {
+		T val = sFrom.peek();
+		sFrom.pop();
+
+		sTo.push(val);
+	}
+}
+
+template <class T>
+void TowerOfHanoi<T>::move(int iFrom, int iTo) {
+	if (iFrom == iTo) {
+	}
+	else if (iFrom == 0 && iTo == 1) {
+		peekPopPush(_leftStack, _middleStack);
+	}
+	else if (iFrom == 0 && iTo == 2) {
+		peekPopPush(_leftStack, _rightStack);
+	}
+	else if (iFrom == 1 && iTo == 0) {
+		peekPopPush(_middleStack, _leftStack);
+	}
+	else if (iFrom == 1 && iTo == 2) {
+		peekPopPush(_middleStack, _rightStack);
+	}
+	else if (iFrom == 2 && iTo == 0) {
+		peekPopPush(_rightStack, _leftStack);
+	}
+	else if (iFrom == 2 && iTo == 1) {
+		peekPopPush(_rightStack, _leftStack);
+	}
+}
+
+template <class T>
+void TowerOfHanoi<T>::sort() {
+	// move all but largest to right
+	while (_leftStack.hasMore()) {
+		move(0, 2);
+	}
+	while (_middleStack.hasMore()) {
+		move(1, 2);
+	}
+	// recursive sort;
+	sort(_rightStack.getLowest());
+}
+
+template <class T>
+void TowerOfHanoi<T>::sort(T targetVal) {
+	
 }
