@@ -36,7 +36,7 @@ public:
 	void randomizeInt(int maxElems,int lB,int uB);
 	int getRandomInt(int lB, int uB);
 
-	void sort();
+	void sort(bool print=false);
 
 private:
 	Stack<T> _leftStack;
@@ -51,11 +51,6 @@ private:
 	Push val from one stack onto other
 	*/
 	void peekPopPush(Stack<T>& sFrom, Stack<T>& sTo);
-
-	/*
-	Recursive sort
-	*/
-	void sort(T targetVal);
 
 	int getMostElements();
 	T getMaxFromVector(std::vector<T> aVec);

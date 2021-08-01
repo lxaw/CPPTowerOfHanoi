@@ -87,86 +87,82 @@ void TowerOfHanoi<T>::printTowerOfHanoi() {
 	Node<T>* m = _middleStack._top;
 	Node<T>* r = _rightStack._top;
 
-	if (max_elem_count == _leftStack._elements) {
-		std::cout << "l m r" << "\n";
+	std::cout << "+---------+" << "\n";
+	std::cout << "| l  m  r |" << "\n";
 
+	if (max_elem_count == _leftStack._elements) {
 		while (l != nullptr) {
 			// print left
-			std::cout << l->_data << " ";
+			std::cout << "| " << l->_data << "  ";
 
 			// print middle
 			if (m != nullptr && m->_level == l->_level) {
-				std::cout << m->_data << " ";
+				std::cout << m->_data << "  ";
 				m = m -> _prev;
 			}
 			else {
-				std::cout << "  ";
+				std::cout << "   ";
 			}
 			if (r != nullptr && r->_level == l->_level) {
-				std::cout << r->_data << "\n";
+				std::cout << r->_data << " |\n";
 				r = r->_prev;
 			}
 			else {
-				std::cout << "\n";
+				std::cout << "  |\n";
 			}
 			l = l->_prev;
 		}
-		std::cout << "\n";
 	}
 	else if (max_elem_count == _middleStack._elements) {
-		std::cout << "l m r" << "\n";
-
 		while (m != nullptr) {
 			// print left
 			if (l != nullptr && l->_level == m->_level) {
-				std::cout << l->_data << " ";
+				std::cout << "| " << l->_data << "  ";
 				l = l->_prev;
 			}
 			else {
-				std::cout << "  ";
+				std::cout << "|    ";
 			}
 			// print m
-			std::cout << m->_data << " ";
+			std::cout << m->_data << "  ";
 
 			// print right
 			if (r != nullptr && r->_level == m->_level) {
-				std::cout << r->_data << "\n";
+				std::cout << r->_data << " |\n";
 				r = r->_prev;
 			}
 			else {
-				std::cout << "\n";
+				std::cout << "  |\n";
 			}
 			
 			m = m->_prev;
 		}
-		std::cout << "\n";
-
 	}
 	else {
-		std::cout << "l m r" << "\n";
 
 		while (r != nullptr) {
 			// print left
 			if (l != nullptr && l->_level == r->_level) {
-				std::cout << l->_data << " ";
+				std::cout << "| "<< l->_data << "  ";
 				l = l->_prev;
 			}
 			else {
-				std::cout << "  ";
+				std::cout << "|    ";
 			}
 			// print mid
 			if (m != nullptr && m->_level == r->_level) {
-				std::cout << m->_data << " ";
+				std::cout << m->_data << "  ";
 				m = m->_prev;
 			}
 			else {
-				std::cout << "  ";
+				std::cout << "   ";
 			}
-			std::cout << r->_data << "\n";
+			std::cout << r->_data << " |\n";
 
 			r = r->_prev;
 		}
 	}
+	std::cout << "+---------+" << "\n";
 
 	free(l);
 	free(m);
@@ -259,6 +255,7 @@ void TowerOfHanoi<T>::peekPopPush(Stack<T>& sFrom, Stack<T>& sTo) {
 template <class T>
 void TowerOfHanoi<T>::move(int iFrom, int iTo) {
 	if (iFrom == iTo) {
+		return;
 	}
 	else if (iFrom == 0 && iTo == 1) {
 		peekPopPush(_leftStack, _middleStack);
@@ -276,24 +273,102 @@ void TowerOfHanoi<T>::move(int iFrom, int iTo) {
 		peekPopPush(_rightStack, _leftStack);
 	}
 	else if (iFrom == 2 && iTo == 1) {
-		peekPopPush(_rightStack, _leftStack);
+		peekPopPush(_rightStack, _middleStack);
 	}
 }
 
 template <class T>
-void TowerOfHanoi<T>::sort() {
+void TowerOfHanoi<T>::sort(bool print) {
 	// move all but largest to right
+	int counter = 0;
 	while (_leftStack.hasMore()) {
+		if (print) {
+			std::cout << "Step: " << counter << ":\n";
+			printTowerOfHanoi();
+		}
 		move(0, 2);
+		counter++;
 	}
 	while (_middleStack.hasMore()) {
+		if (print) {
+			std::cout << "Step: " << counter << ":\n";
+			printTowerOfHanoi();
+		}
 		move(1, 2);
+		counter++;
 	}
-	// recursive sort;
-	sort(_rightStack.getLowest());
-}
 
-template <class T>
-void TowerOfHanoi<T>::sort(T targetVal) {
-	
+	while (_rightStack.hasMore() || _leftStack.hasMore()){
+		if (_rightStack.hasMore() && _leftStack.hasMore()) {
+			T rightLow{ _rightStack.getLowest() };
+			T leftLow{ _leftStack.getLowest() };
+			if (leftLow < rightLow) {
+				// go from left
+				while (_leftStack.hasMore()) {
+					if (_leftStack._top->_data == leftLow) {
+						move(0, 1);
+					}
+					else {
+						move(0, 2);
+					}
+					if (print) {
+						std::cout << "Step: " << counter << ":\n";
+						printTowerOfHanoi();
+					}
+					counter++;
+				}
+			}
+			else {
+				// go from right
+				while (_rightStack.hasMore()) {
+					if (_rightStack._top->_data == rightLow) {
+						move(2, 1);
+					}
+					else {
+						move(2, 0);
+					}
+					if (print) {
+						std::cout << "Step: " << counter << ":\n";
+						printTowerOfHanoi();
+					}
+					counter++;
+				}
+			}
+		}
+		else if (_leftStack.hasMore()) {
+			// only left stack
+			T lowest = _leftStack.getLowest();
+			while (_leftStack.hasMore()) {
+				if (_leftStack._top->_data == lowest) {
+					move(0, 1);
+				}
+				else {
+					move(0, 2);
+				}
+				if (print) {
+					std::cout << "Step: " << counter << ":\n";
+					printTowerOfHanoi();
+				}
+				counter++;
+			}
+		}
+		else {
+			// only right stack
+			T lowest = _rightStack.getLowest();
+			while (_rightStack.hasMore()) {
+				if (_rightStack._top->_data == lowest) {
+					move(2,1);
+				}
+				else {
+					move(2,0);
+				}
+				if (print) {
+					std::cout << "Step: " << counter << ":\n";
+					printTowerOfHanoi();
+				}
+				counter++;
+			}
+		}
+	}
+
 }

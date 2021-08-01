@@ -9,8 +9,7 @@ int main()
 {
 	TowerOfHanoi<int> t;
 	t.randomizeInt(10, 0, 5);
-	t.printTowerOfHanoi();
-	t.sort();
-	t.printTowerOfHanoi();
+	t.sort(true);
 }
+		
 
