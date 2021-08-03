@@ -372,3 +372,15 @@ void TowerOfHanoi<T>::sort(bool print) {
 	}
 
 }
+
+
+
+
+/*
+Graphical version
+*/
+template <class T>
+TowerOfHanoiGraphic<T>::TowerOfHanoiGraphic(unsigned int win_w, unsigned int win_h) {
+	_win_w = win_w;
+	_win_h = win_h;
+}

@@ -1,9 +1,11 @@
 #pragma once
 
+#include <vector>
+
 #include "Stack.h"
 #include "Stack.cpp"
 
-#include <vector>
+#include "Sprites.h"
 
 template <class T>
 class TowerOfHanoi
@@ -38,7 +40,6 @@ public:
 
 	void sort(bool print=false);
 
-private:
 	Stack<T> _leftStack;
 	Stack<T> _middleStack;
 	Stack<T> _rightStack;
@@ -54,5 +55,16 @@ private:
 
 	int getMostElements();
 	T getMaxFromVector(std::vector<T> aVec);
+};
+
+template <class T>
+class TowerOfHanoiGraphic : public TowerOfHanoi<T> {
+public:
+	TowerOfHanoiGraphic(unsigned int win_w, unsigned int win_h);
+
+	unsigned int _win_w;
+	unsigned int _win_h;
+
+	
 };
 
