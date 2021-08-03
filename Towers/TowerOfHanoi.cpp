@@ -163,10 +163,6 @@ void TowerOfHanoi<T>::printTowerOfHanoi() {
 		}
 	}
 	std::cout << "+---------+" << "\n";
-
-	free(l);
-	free(m);
-	free(r);
 }
 
 template <class T>
@@ -380,7 +376,43 @@ void TowerOfHanoi<T>::sort(bool print) {
 Graphical version
 */
 template <class T>
-TowerOfHanoiGraphic<T>::TowerOfHanoiGraphic(unsigned int win_w, unsigned int win_h) {
+TowerOfHanoiGraphic<T>::TowerOfHanoiGraphic(int block_count,unsigned int win_w, unsigned int win_h) {
 	_win_w = win_w;
 	_win_h = win_h;
+	_block_count = block_count;
+
+	peg0 = Peg{ 0, _win_w, _win_h };
+	peg1 = Peg{ 1, _win_w, _win_h };
+	peg2 = Peg{ 2, _win_w, _win_h };
+
+	_pegs = { peg0,peg1,peg2 };
+
+	// set the stacks
+	this->randomizeInt(block_count,_block_lb,_block_ub);
+
+	// initialize disks
+	// top down
+	Node<T>* l = this->_leftStack._top;
+	Node<T>* m = this->_middleStack._top;
+	Node<T>* r = this->_rightStack._top;
+
+	sf::Color lColor{ 255,0,0,255 };
+	sf::Color mColor{ 0,255,0,255 };
+	sf::Color rColor{ 0,0,255,255 };
+
+	while (l != nullptr) {
+		_leftDisks.push_back(Disk{ l->_data,lColor,peg0._x,l->_level,block_count,_win_w,_win_h});
+		l = l->_prev;
+	}
+	while (m != nullptr) {
+		_middleDisks.push_back(Disk{ m->_data,mColor,peg1._x,m->_level,block_count,_win_w,_win_h });
+		m = m->_prev;
+	}
+	while (r != nullptr) {
+		_rightDisks.push_back(Disk{ r->_data,rColor,peg2._x,r->_level,block_count,_win_w,_win_h});
+		r = r->_prev;
+	}
+
+
+	
 }

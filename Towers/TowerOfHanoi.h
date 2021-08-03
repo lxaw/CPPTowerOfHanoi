@@ -60,11 +60,23 @@ public:
 template <class T>
 class TowerOfHanoiGraphic : public TowerOfHanoi<T> {
 public:
-	TowerOfHanoiGraphic(unsigned int win_w, unsigned int win_h);
+	TowerOfHanoiGraphic(int block_count,unsigned int win_w, unsigned int win_h);
+
+	static const int _block_lb = 1;
+	static const int _block_ub = 9;
 
 	unsigned int _win_w;
 	unsigned int _win_h;
+	int _block_count;
 
-	
+	Peg peg0;
+	Peg peg1;
+	Peg peg2;
+
+	std::vector<Peg> _pegs;
+
+	std::vector<Disk> _leftDisks;
+	std::vector<Disk> _middleDisks;
+	std::vector<Disk> _rightDisks;
 };
 
