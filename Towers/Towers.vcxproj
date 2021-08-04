@@ -145,6 +145,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Move.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="Sprites.cpp" />
     <ClCompile Include="Stack.cpp" />
@@ -152,6 +153,7 @@
     <ClCompile Include="Towers.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Move.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="Sprites.h" />
     <ClInclude Include="Stack.h" />

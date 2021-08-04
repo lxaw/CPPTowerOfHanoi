@@ -3,8 +3,8 @@
 #include <vector>
 
 #include "Stack.h"
-#include "Stack.cpp"
-
+#include "Move.h"
+#include "Sprites.h"
 #include "Sprites.h"
 
 template <class T>
@@ -28,6 +28,12 @@ public:
 	T peekMiddle();
 	T peekRight();
 
+	/*
+	Past moves
+	*/
+	Stack<Move> _moves;
+	void pushMove(int iFrom, int iTo);
+
 
 	void printTowerOfHanoi();
 
@@ -36,7 +42,7 @@ public:
 	/*
 	Move element from one stack to another, no swap.
 	*/
-	void move(int iFrom, int iTo);
+	void move(int iFrom, int iTo,bool addToStack);
 
 	bool canMove(int iFrom, int iTo);
 
@@ -60,6 +66,11 @@ public:
 	Push val from one stack onto other
 	*/
 	void peekPopPush(Stack<T>& sFrom, Stack<T>& sTo);
+
+	/*
+	Reset the stack to beginning
+	*/
+	void reset(bool print);
 private:
 	// recursive sort
 	void sort(bool print, int numDisks, int fromI, int toI,int auxI);

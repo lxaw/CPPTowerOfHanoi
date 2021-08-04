@@ -1,5 +1,10 @@
-// Towers.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+
+
+
+/*
+Important: Node class assumes the use of a default constructor.
+If there is none for a class, there will be a "deleted function" error.
+*/
 #pragma once
 
 #include <vector>
@@ -12,9 +17,8 @@
 int main()
 {
 	TowerOfHanoi<int> t{ 1,3 };
-	t.printTowerOfHanoi();
 	t.sort(true);
-	t.printTowerOfHanoi();
+	t.reset(true);
 
 //	sf::RenderWindow window(sf::VideoMode(800, 600), "Tower of Hanoi");
 //	window.setFramerateLimit(60);

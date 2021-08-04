@@ -3,8 +3,9 @@
 #include <random>
 
 #include "TowerOfHanoi.h"
+#include "Stack.cpp"
 #include "Node.h"
-#include "Node.cpp"
+#include "Move.cpp"
 
 // constructor
 template <class T>
@@ -219,7 +220,14 @@ void TowerOfHanoi<T>::peekPopPush(Stack<T>& sFrom, Stack<T>& sTo) {
 }
 
 template <class T>
-void TowerOfHanoi<T>::move(int iFrom, int iTo) {
+void TowerOfHanoi<T>::pushMove(int iFrom, int iTo) {
+	Move move{ iFrom, iTo };
+	this->_moves.push(move);
+}
+
+
+template <class T>
+void TowerOfHanoi<T>::move(int iFrom, int iTo,bool addToStack) {
 	if (iFrom == iTo) {
 		return;
 	}
@@ -240,6 +248,9 @@ void TowerOfHanoi<T>::move(int iFrom, int iTo) {
 	}
 	else if (iFrom == 2 && iTo == 1) {
 		peekPopPush(_rightStack, _middleStack);
+	}
+	if (addToStack) {
+		this->pushMove(iFrom, iTo);
 	}
 }
 
@@ -311,6 +322,9 @@ void TowerOfHanoi<T>::sort(bool print) {
 	To do: move all left first
 	*/
 	sort(print, _numDisks, 0,2,1 );
+	if (print) {
+		std::cout << "Sorting complete.\n";
+	}
 }
 
 template <class T>
@@ -319,12 +333,35 @@ void TowerOfHanoi<T>::sort(bool print,int numDisks, int fromI, int toI,int auxI)
 		// move n-1 from source to aux
 		sort(print,numDisks - 1, fromI, auxI, toI);
 		// move nth disk from source to target
-		move(fromI, toI);
+		move(fromI, toI,true);
 		if (print) {
+			std::cout << "Move disk from " << fromI << " to " << toI << "\n";
 			this->printTowerOfHanoi();
 		}
 		// move n-1 on aux to target
 		sort(print,numDisks - 1, auxI, toI, fromI);
+	}
+}
+
+template <class T>
+void TowerOfHanoi<T>::reset(bool print) {
+	// go through the move stack, reverse the moves
+	while (this->_moves.hasMore()) {
+		Move t = _moves.peek();
+		// swap the to and from
+		int from = t._moveArr[1];
+		int to = t._moveArr[0];
+		// move without adding to move stack
+		this->move(from, to, false);
+
+		if (print) {
+			std::cout << "Resetting towers...\n";
+			this->printTowerOfHanoi();
+		}
+		_moves.pop();
+	}
+	if (print) {
+		std::cout << "Towers have been reset.\n";
 	}
 }
 
