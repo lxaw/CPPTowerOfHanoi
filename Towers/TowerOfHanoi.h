@@ -11,6 +11,11 @@ template <class T>
 class TowerOfHanoi
 {
 public:
+	// constructor
+	TowerOfHanoi(int lB, int uB);
+	
+	int _numDisks;
+
 	void pushLeft(T aData);
 	void pushMiddle(T aData);
 	void pushRight(T aData);
@@ -33,10 +38,13 @@ public:
 	*/
 	void move(int iFrom, int iTo);
 
+	bool canMove(int iFrom, int iTo);
+
+	void setTowerInt(int lB, int uB);
 
 
-	void randomizeInt(int maxElems,int lB,int uB);
-	int getRandomInt(int lB, int uB);
+
+	int getMaxIntVec(std::vector<int> aVec);
 
 	void sort(bool print=false);
 
@@ -52,9 +60,9 @@ public:
 	Push val from one stack onto other
 	*/
 	void peekPopPush(Stack<T>& sFrom, Stack<T>& sTo);
-
-	int getMostElements();
-	T getMaxFromVector(std::vector<T> aVec);
+private:
+	// recursive sort
+	void sort(bool print, int numDisks, int fromI, int toI,int auxI);
 };
 
 template <class T>
@@ -65,9 +73,14 @@ public:
 	static const int _block_lb = 1;
 	static const int _block_ub = 9;
 
+
 	unsigned int _win_w;
 	unsigned int _win_h;
 	int _block_count;
+
+	sf::Color _lColor{ 255,0,0,255 };
+	sf::Color _mColor{ 0,255,0,255 };
+	sf::Color _rColor{ 249,255,74,255 };
 
 	Peg peg0;
 	Peg peg1;
@@ -75,8 +88,6 @@ public:
 
 	std::vector<Peg> _pegs;
 
-	std::vector<Disk> _leftDisks;
-	std::vector<Disk> _middleDisks;
-	std::vector<Disk> _rightDisks;
+	std::vector<T> getStackVector(int stackIndex);
 };
 

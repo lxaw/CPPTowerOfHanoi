@@ -3,8 +3,19 @@
 #include <random>
 
 #include "TowerOfHanoi.h"
-#include "Stack.h"
 #include "Node.h"
+#include "Node.cpp"
+
+// constructor
+template <class T>
+TowerOfHanoi<T>::TowerOfHanoi(int lB, int uB) {
+	setTowerInt(lB, uB);
+
+	/*
+	To do: throw error if negative
+	*/
+	this->_numDisks = uB - lB + 1;
+}
 
 // pushing
 template <class T>
@@ -48,36 +59,29 @@ T TowerOfHanoi<T>::peekRight() {
 	return _rightStack.peek();
 }
 
-// get max from an array
 template <class T>
-T TowerOfHanoi<T>::getMaxFromVector(std::vector<T> aVec) {
-	T max = aVec[0];
+int TowerOfHanoi<T>::getMaxIntVec(std::vector<int> aVec) {
+	int max = aVec[0];
 
-	for (int i = 0;i < aVec.size();++i) {
-		if (aVec[i] > max) {
-			max = aVec[i];
+	for (auto i : aVec) {
+		if (i > max) {
+			max = i;
 		}
 	}
-
 	return max;
 }
 
+// print the towers
 template <class T>
-int TowerOfHanoi<T>::getMostElements() {
+void TowerOfHanoi<T>::printTowerOfHanoi() {
 	int lElems = _leftStack._elements;
 	int mElems = _middleStack._elements;
 	int rElems = _rightStack._elements;
 
-	std::vector<int> elem_vec{ lElems,mElems,rElems };
+	std::vector<int> elemVec{ lElems,mElems,rElems };
+	
+	int max_elem_count = getMaxIntVec(elemVec);
 
-	int max_elem_count = getMaxFromVector(elem_vec);
-
-	return max_elem_count;
-}
-// print the towers
-template <class T>
-void TowerOfHanoi<T>::printTowerOfHanoi() {
-	int max_elem_count = getMostElements();
 
 	if (max_elem_count == 0) {
 		return;
@@ -202,41 +206,7 @@ void TowerOfHanoi<T>::swap(int iFrom, int iTo) {
 		return;
 	}
 }
-template <class T>
-int TowerOfHanoi<T>::getRandomInt(int lB, int uB) {
-	std::random_device rd;
-	std::mt19937 rng(rd());
-	std::uniform_int_distribution<int> uni(lB,uB);
 
-	return uni(rng);
-}
-
-template <class T>
-void TowerOfHanoi<T>::randomizeInt(int maxElems,int lB,int uB) {
-
-	// randomize each tower
-	std::random_device rd;
-	std::mt19937 rng(rd());
-	
-	// get a random amount of elements for each stack
-	std::uniform_int_distribution<int> uni(0, maxElems);
-	
-	int maxElemL{ uni(rng) };
-	int maxElemM{ uni(rng) };
-	int maxElemR{ uni(rng) };
-
-
-	// get random entries for each stack
-	for (int i = 0; i < maxElemL;++i) {
-		_leftStack.push(getRandomInt(lB,uB));
-	}
-	for (int i = 0; i < maxElemM;++i) {
-		_middleStack.push(getRandomInt(lB,uB));
-	}
-	for (int i = 0; i < maxElemR;++i) {
-		_rightStack.push(getRandomInt(lB,uB));
-	}
-}
 
 template<class T>
 void TowerOfHanoi<T>::peekPopPush(Stack<T>& sFrom, Stack<T>& sTo) {
@@ -274,100 +244,90 @@ void TowerOfHanoi<T>::move(int iFrom, int iTo) {
 }
 
 template <class T>
-void TowerOfHanoi<T>::sort(bool print) {
-	// move all but largest to right
-	int counter = 0;
-	while (_leftStack.hasMore()) {
-		if (print) {
-			std::cout << "Step: " << counter << ":\n";
-			printTowerOfHanoi();
+bool checkLessThanStack(Stack<T>& fromStack, Stack<T>& toStack) {
+	
+	if (fromStack._top != nullptr && toStack._top != nullptr) {
+		// can compare
+		if (fromStack._top < toStack._top) {
+			return true;
 		}
-		move(0, 2);
-		counter++;
+		return false;
 	}
-	while (_middleStack.hasMore()) {
-		if (print) {
-			std::cout << "Step: " << counter << ":\n";
-			printTowerOfHanoi();
-		}
-		move(1, 2);
-		counter++;
+	else if (fromStack._top == nullptr && toStack._top != nullptr) {
+		return false;
+	}
+	else if (fromStack._top != nullptr && toStack._top == nullptr) {
+		return true;
+	}
+	else {
+		// both null pointer
+		return false;
 	}
 
-	while (_rightStack.hasMore() || _leftStack.hasMore()){
-		if (_rightStack.hasMore() && _leftStack.hasMore()) {
-			T rightLow{ _rightStack.getLowest() };
-			T leftLow{ _leftStack.getLowest() };
-			if (leftLow < rightLow) {
-				// go from left
-				while (_leftStack.hasMore()) {
-					if (_leftStack._top->_data == leftLow) {
-						move(0, 1);
-					}
-					else {
-						move(0, 2);
-					}
-					if (print) {
-						std::cout << "Step: " << counter << ":\n";
-						printTowerOfHanoi();
-					}
-					counter++;
-				}
-			}
-			else {
-				// go from right
-				while (_rightStack.hasMore()) {
-					if (_rightStack._top->_data == rightLow) {
-						move(2, 1);
-					}
-					else {
-						move(2, 0);
-					}
-					if (print) {
-						std::cout << "Step: " << counter << ":\n";
-						printTowerOfHanoi();
-					}
-					counter++;
-				}
-			}
-		}
-		else if (_leftStack.hasMore()) {
-			// only left stack
-			T lowest = _leftStack.getLowest();
-			while (_leftStack.hasMore()) {
-				if (_leftStack._top->_data == lowest) {
-					move(0, 1);
-				}
-				else {
-					move(0, 2);
-				}
-				if (print) {
-					std::cout << "Step: " << counter << ":\n";
-					printTowerOfHanoi();
-				}
-				counter++;
-			}
-		}
-		else {
-			// only right stack
-			T lowest = _rightStack.getLowest();
-			while (_rightStack.hasMore()) {
-				if (_rightStack._top->_data == lowest) {
-					move(2,1);
-				}
-				else {
-					move(2,0);
-				}
-				if (print) {
-					std::cout << "Step: " << counter << ":\n";
-					printTowerOfHanoi();
-				}
-				counter++;
-			}
-		}
-	}
 
 }
+
+template <class T>
+bool TowerOfHanoi<T>::canMove(int iFrom, int iTo) {
+	// can only move a smaller disk onto a bigger one
+	if (iFrom == iTo) {
+		return false;
+	}
+	else if (iFrom == 0 && iTo == 1) {
+		return checkLessThanStack(this->_leftStack, this->_middleStack);
+	}
+	else if (iFrom == 0 && iTo == 2) {
+		return checkLessThanStack(this->_leftStack, this->_rightStack);
+	}
+	else if (iFrom == 1 && iTo == 0) {
+		return checkLessThanStack(this->_middleStack, this->_leftStack);
+	}
+	else if (iFrom == 1 && iTo == 2) {
+		return checkLessThanStack(this->_middleStack, this->_rightStack);
+	}
+	else if (iFrom == 2 && iTo == 0) {
+		return checkLessThanStack(this->_rightStack, this->_leftStack);
+	}
+	else if (iFrom == 2 && iTo == 1) {
+		return checkLessThanStack(this->_rightStack, this->_middleStack);
+	}
+}
+
+template <class T>
+void TowerOfHanoi<T>::setTowerInt(int lB, int uB) {
+	if (lB > uB) {
+		return;
+	}
+	// populate the left tower
+	for (int i = uB; i >= lB;--i) {
+		this->_leftStack.push(i);
+	}
+}
+
+template <class T>
+void TowerOfHanoi<T>::sort(bool print) {
+	// need to move all to left peg
+	/*
+	To do: move all left first
+	*/
+	sort(print, _numDisks, 0,2,1 );
+}
+
+template <class T>
+void TowerOfHanoi<T>::sort(bool print,int numDisks, int fromI, int toI,int auxI) {
+	if (numDisks > 0) {
+		// move n-1 from source to aux
+		sort(print,numDisks - 1, fromI, auxI, toI);
+		// move nth disk from source to target
+		move(fromI, toI);
+		if (print) {
+			this->printTowerOfHanoi();
+		}
+		// move n-1 on aux to target
+		sort(print,numDisks - 1, auxI, toI, fromI);
+	}
+}
+
 
 
 
@@ -376,7 +336,7 @@ void TowerOfHanoi<T>::sort(bool print) {
 Graphical version
 */
 template <class T>
-TowerOfHanoiGraphic<T>::TowerOfHanoiGraphic(int block_count,unsigned int win_w, unsigned int win_h) {
+TowerOfHanoiGraphic<T>::TowerOfHanoiGraphic(int block_count, unsigned int win_w, unsigned int win_h) {
 	_win_w = win_w;
 	_win_h = win_h;
 	_block_count = block_count;
@@ -388,7 +348,7 @@ TowerOfHanoiGraphic<T>::TowerOfHanoiGraphic(int block_count,unsigned int win_w, 
 	_pegs = { peg0,peg1,peg2 };
 
 	// set the stacks
-	this->randomizeInt(block_count,_block_lb,_block_ub);
+	this->randomizeDisk(block_count, _block_lb, _block_ub);
 
 	// initialize disks
 	// top down
@@ -396,23 +356,31 @@ TowerOfHanoiGraphic<T>::TowerOfHanoiGraphic(int block_count,unsigned int win_w, 
 	Node<T>* m = this->_middleStack._top;
 	Node<T>* r = this->_rightStack._top;
 
-	sf::Color lColor{ 255,0,0,255 };
-	sf::Color mColor{ 0,255,0,255 };
-	sf::Color rColor{ 0,0,255,255 };
+}
 
-	while (l != nullptr) {
-		_leftDisks.push_back(Disk{ l->_data,lColor,peg0._x,l->_level,block_count,_win_w,_win_h});
-		l = l->_prev;
+template <class T>
+std::vector<T> TowerOfHanoiGraphic<T>::getStackVector(int stackIndex) {
+	std::vector<T> retVec;
+	if (stackIndex == 0) {
+		Node<T>* l = this->_leftStack._top;
+		while (l != nullptr) {
+			retVec.push_back(l->_data);
+			l = l->_prev;
+		}
 	}
-	while (m != nullptr) {
-		_middleDisks.push_back(Disk{ m->_data,mColor,peg1._x,m->_level,block_count,_win_w,_win_h });
-		m = m->_prev;
+	else if (stackIndex == 1) {
+		Node<T>* m = this->_middleStack._top;
+		while (m != nullptr) {
+			retVec.push_back(m->_data);
+			m = m->_prev;
+		}
 	}
-	while (r != nullptr) {
-		_rightDisks.push_back(Disk{ r->_data,rColor,peg2._x,r->_level,block_count,_win_w,_win_h});
-		r = r->_prev;
+	else if (stackIndex == 2) {
+		Node<T>* r = this->_rightStack._top;
+		while (r != nullptr) {
+			retVec.push_back(r->_data);
+			r = r->_prev;
+		}
 	}
-
-
-	
+	return retVec;
 }

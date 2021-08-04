@@ -3,6 +3,20 @@
 
 #include "Sprites.h"
 
+// background color
+Background::Background(unsigned int win_w, unsigned int win_h) {
+	this->_width = win_w;
+	this->_height = win_h;
+
+	this->_color = sf::Color{ 234,234,189 };
+	this->_x = 0;
+	this->_y = 0;
+
+	this->_rect = sf::RectangleShape(sf::Vector2f(_width, _height));
+	this->_rect.setPosition(_x, _y);
+	this->_rect.setFillColor(_color);
+}
+
 // Peg default const
 Peg::Peg() {
 	_peg_number = 0;
@@ -49,7 +63,6 @@ Disk::Disk(int diskID,sf::Color color,unsigned int pegX, int level,int max_level
 	this->_rect.setPosition(_x, _y);
 	// color
 	this->_rect.setFillColor(_color);
-
 }
 
 void Disk::changePos(unsigned int pegX, int level) {
@@ -58,10 +71,29 @@ void Disk::changePos(unsigned int pegX, int level) {
 
 	int level_adjusted = (std::abs(level - _max_level)+1);
 	
-	new_y = level_adjusted * (_win_h * 4 / 5) / _max_level;
+	new_y = level_adjusted * (_win_h * 5/7) / _max_level;
 
 
 	this->_x = new_x;
 	this->_y = new_y;
 }
+
+bool Disk::operator < (Disk const& aDisk) {
+	if (_diskID < aDisk._diskID) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+bool Disk::operator > (Disk const& aDisk) {
+	if (_diskID > aDisk._diskID) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+
 

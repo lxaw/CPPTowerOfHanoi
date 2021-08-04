@@ -5,9 +5,9 @@ template <class T>
 struct Node
 {
 	T _data;
-	Node<T>* _prev;
-	int _level;
+	Node<T>* _prev = nullptr;
+	int _level = 0;
 
-	Node<T>* _next;
+	Node<T>* _next = nullptr;
 };
 
