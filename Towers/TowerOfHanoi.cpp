@@ -7,6 +7,11 @@
 #include "Node.h"
 #include "Move.cpp"
 
+// default
+template <class T>
+TowerOfHanoi<T>::TowerOfHanoi() {
+	this->_numDisks = 0;
+}
 // constructor
 template <class T>
 TowerOfHanoi<T>::TowerOfHanoi(int lB, int uB) {
@@ -365,18 +370,29 @@ void TowerOfHanoi<T>::reset(bool print) {
 	}
 }
 
-
-
-
-
 /*
 Graphical version
 */
+
 template <class T>
-TowerOfHanoiGraphic<T>::TowerOfHanoiGraphic(int block_count, unsigned int win_w, unsigned int win_h) {
+void TowerOfHanoiGraphic<T>::setTowerDisk(unsigned int pegX,sf::Color color) {
+	// set the left tower
+	for (int i = this->_uB;i >= this->_lB;--i) {
+		int level = _uB - i;
+		std::cout << level << "\n";
+		this->_leftStack.push(Disk{ i,color,pegX,level,this->_numDisks,this->_win_w,this->_win_h });
+	}
+}
+
+template <class T>
+TowerOfHanoiGraphic<T>::TowerOfHanoiGraphic(int lB, int uB, unsigned int win_w, unsigned int win_h) {
+	this->_lB = lB;
+	this->_uB = uB;
+
+	this->_numDisks = uB - lB + 1;
+
 	_win_w = win_w;
 	_win_h = win_h;
-	_block_count = block_count;
 
 	peg0 = Peg{ 0, _win_w, _win_h };
 	peg1 = Peg{ 1, _win_w, _win_h };
@@ -384,8 +400,7 @@ TowerOfHanoiGraphic<T>::TowerOfHanoiGraphic(int block_count, unsigned int win_w,
 
 	_pegs = { peg0,peg1,peg2 };
 
-	// set the stacks
-	this->randomizeDisk(block_count, _block_lb, _block_ub);
+	this->setTowerDisk(peg0._x, sf::Color::Blue);
 
 	// initialize disks
 	// top down

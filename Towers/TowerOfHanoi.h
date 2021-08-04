@@ -11,6 +11,8 @@ template <class T>
 class TowerOfHanoi
 {
 public:
+	// default constructor
+	TowerOfHanoi();
 	// constructor
 	TowerOfHanoi(int lB, int uB);
 	
@@ -79,15 +81,16 @@ private:
 template <class T>
 class TowerOfHanoiGraphic : public TowerOfHanoi<T> {
 public:
-	TowerOfHanoiGraphic(int block_count,unsigned int win_w, unsigned int win_h);
+	TowerOfHanoiGraphic(int lB, int uB,unsigned int win_w, unsigned int win_h);
 
-	static const int _block_lb = 1;
-	static const int _block_ub = 9;
+	int _lB;
+	int _uB;
+
+	void setTowerDisk(unsigned int pegX,sf::Color color);
 
 
 	unsigned int _win_w;
 	unsigned int _win_h;
-	int _block_count;
 
 	sf::Color _lColor{ 255,0,0,255 };
 	sf::Color _mColor{ 0,255,0,255 };
