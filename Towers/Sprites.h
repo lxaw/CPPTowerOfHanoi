@@ -35,9 +35,11 @@ class Disk :public Block
 {
 public:
 	Disk() = default;
-	Disk(int diskID,sf::Color color,unsigned int pegX,int level,int max_level,unsigned int win_w,unsigned int win_h);
+	Disk(int diskID,sf::Color color,Peg peg,int level,int max_level,unsigned int win_w,unsigned int win_h);
 
-	void changePos(unsigned int pegX, int level);
+	Peg peg;
+
+	void changePos(Peg newPeg, int level);
 
 	bool operator < (Disk const& aDisk);
 	bool operator > (Disk const& aDisk);

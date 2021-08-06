@@ -172,6 +172,9 @@ void TowerOfHanoi<T>::printTowerOfHanoi() {
 			r = r->_prev;
 		}
 	}
+	l = nullptr;
+	m = nullptr;
+	r = nullptr;
 	std::cout << "+---------+" << "\n";
 }
 
@@ -264,7 +267,7 @@ bool checkLessThanStack(Stack<T>& fromStack, Stack<T>& toStack) {
 	
 	if (fromStack._top != nullptr && toStack._top != nullptr) {
 		// can compare
-		if (fromStack._top < toStack._top) {
+		if (fromStack._top->_data < toStack._top->_data) {
 			return true;
 		}
 		return false;
@@ -375,12 +378,54 @@ Graphical version
 */
 
 template <class T>
-void TowerOfHanoiGraphic<T>::setTowerDisk(unsigned int pegX,sf::Color color) {
+void TowerOfHanoiGraphic<T>::setTowerDisk(Peg peg,sf::Color color) {
 	// set the left tower
 	for (int i = this->_uB;i >= this->_lB;--i) {
 		int level = _uB - i;
-		std::cout << level << "\n";
-		this->_leftStack.push(Disk{ i,color,pegX,level,this->_numDisks,this->_win_w,this->_win_h });
+		this->_leftStack.push(Disk{ i,color,peg,level,this->_numDisks,this->_win_w,this->_win_h });
+	}
+}
+
+template <class T>
+void TowerOfHanoiGraphic<T>::moveDisk(int fromPeg, int toPeg) {
+	if (fromPeg == toPeg) {
+		return;
+	}
+	else if (fromPeg == 0 && toPeg == 1) {
+		int new_level = this->_middleStack._elements;
+		// move the disk
+		this->_leftStack._top->_data.changePos(this->_peg1, new_level);
+		this->move(0, 1,true);
+	}
+	else if (fromPeg == 0 && toPeg == 2) {
+		int new_level = this->_rightStack._elements;
+		// move the disk
+		this->_leftStack._top->_data.changePos(this->_peg2, new_level);
+		this->move(0, 2,true);
+	}
+	else if (fromPeg == 1 && toPeg == 0) {
+		int new_level = this->_leftStack._elements;
+		// move the disk
+		this->_middleStack._top->_data.changePos(this->_peg0, new_level);
+		this->move(1,0,true);
+	}
+	else if (fromPeg == 1 && toPeg == 2) {
+		int new_level = this->_rightStack._elements;
+		// move the disk
+		this->_middleStack._top->_data.changePos(this->_peg2, new_level);
+		this->move(1,2,true);
+	}
+	else if (fromPeg == 2 && toPeg == 0) {
+		int new_level = this->_leftStack._elements;
+		// move the disk
+		this->_rightStack._top->_data.changePos(this->_peg0, new_level);
+		this->move(2,0,true);
+	}
+	else if (fromPeg == 2 && toPeg == 1) {
+		int new_level = this->_middleStack._elements;
+		// move the disk
+		this->_rightStack._top->_data.changePos(this->_peg1, new_level);
+		this->move(2,1,true);
 	}
 }
 
@@ -394,45 +439,12 @@ TowerOfHanoiGraphic<T>::TowerOfHanoiGraphic(int lB, int uB, unsigned int win_w, 
 	_win_w = win_w;
 	_win_h = win_h;
 
-	peg0 = Peg{ 0, _win_w, _win_h };
-	peg1 = Peg{ 1, _win_w, _win_h };
-	peg2 = Peg{ 2, _win_w, _win_h };
+	_peg0 = Peg{ 0, _win_w, _win_h };
+	_peg1 = Peg{ 1, _win_w, _win_h };
+	_peg2 = Peg{ 2, _win_w, _win_h };
 
-	_pegs = { peg0,peg1,peg2 };
+	_pegs = { _peg0,_peg1,_peg2 };
 
-	this->setTowerDisk(peg0._x, sf::Color::Blue);
+	this->setTowerDisk(_peg0, sf::Color::Blue);
 
-	// initialize disks
-	// top down
-	Node<T>* l = this->_leftStack._top;
-	Node<T>* m = this->_middleStack._top;
-	Node<T>* r = this->_rightStack._top;
-
-}
-
-template <class T>
-std::vector<T> TowerOfHanoiGraphic<T>::getStackVector(int stackIndex) {
-	std::vector<T> retVec;
-	if (stackIndex == 0) {
-		Node<T>* l = this->_leftStack._top;
-		while (l != nullptr) {
-			retVec.push_back(l->_data);
-			l = l->_prev;
-		}
-	}
-	else if (stackIndex == 1) {
-		Node<T>* m = this->_middleStack._top;
-		while (m != nullptr) {
-			retVec.push_back(m->_data);
-			m = m->_prev;
-		}
-	}
-	else if (stackIndex == 2) {
-		Node<T>* r = this->_rightStack._top;
-		while (r != nullptr) {
-			retVec.push_back(r->_data);
-			r = r->_prev;
-		}
-	}
-	return retVec;
 }

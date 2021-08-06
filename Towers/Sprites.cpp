@@ -45,28 +45,10 @@ Peg::Peg(unsigned int peg_number,unsigned int win_w, unsigned int win_h) {
 	this->_rect.setFillColor(_color);
 }
 
-// disk constructor
-Disk::Disk(int diskID,sf::Color color,unsigned int pegX, int level,int max_level,unsigned int win_w,unsigned int win_h) {
-	_diskID = diskID;
-	_win_w = win_w;
-	_win_h = win_h;
-	_max_level = max_level;
+// move disks
+void Disk::changePos(Peg peg, int level) {
 
-	this->_width = (diskID +1) * 20;
-	this->_height = 20;
-	changePos(pegX, level);
-
-	this->_color = color;
-	// create the rects
-	this->_rect = sf::RectangleShape(sf::Vector2f(_width, _height));
-	// set position
-	this->_rect.setPosition(_x, _y);
-	// color
-	this->_rect.setFillColor(_color);
-}
-
-void Disk::changePos(unsigned int pegX, int level) {
-	unsigned int new_x = pegX - _width/2 + _height/2; 
+	unsigned int new_x = peg._x - _width/2 + _height/2; 
 	unsigned int new_y = (unsigned int)level;
 
 	int level_adjusted = (std::abs(level - _max_level)+1);
@@ -76,8 +58,32 @@ void Disk::changePos(unsigned int pegX, int level) {
 
 	this->_x = new_x;
 	this->_y = new_y;
+	// set position
+	this->_rect.setPosition(_x, _y);
 }
 
+
+
+// disk constructor
+Disk::Disk(int diskID,sf::Color color,Peg peg, int level,int max_level,unsigned int win_w,unsigned int win_h) {
+	_diskID = diskID;
+	_win_w = win_w;
+	_win_h = win_h;
+	_max_level = max_level;
+
+	this->changePos(peg, level);
+
+	this->_width = (diskID +1) * 20;
+	this->_height = 20;
+
+	this->_color = color;
+	// create the rects
+	this->_rect = sf::RectangleShape(sf::Vector2f(_width, _height));
+	// set position
+	this->_rect.setPosition(_x, _y);
+	// color
+	this->_rect.setFillColor(_color);
+}
 bool Disk::operator < (Disk const& aDisk) {
 	if (_diskID < aDisk._diskID) {
 		return true;

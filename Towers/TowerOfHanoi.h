@@ -78,30 +78,30 @@ private:
 	void sort(bool print, int numDisks, int fromI, int toI,int auxI);
 };
 
-template <class T>
-class TowerOfHanoiGraphic : public TowerOfHanoi<T> {
+template <class Disk>
+class TowerOfHanoiGraphic : public TowerOfHanoi<Disk> {
 public:
 	TowerOfHanoiGraphic(int lB, int uB,unsigned int win_w, unsigned int win_h);
 
 	int _lB;
 	int _uB;
 
-	void setTowerDisk(unsigned int pegX,sf::Color color);
+	void setTowerDisk(Peg peg,sf::Color color);
 
 
 	unsigned int _win_w;
 	unsigned int _win_h;
 
+	void moveDisk(int fromPeg, int toPeg);
+
 	sf::Color _lColor{ 255,0,0,255 };
 	sf::Color _mColor{ 0,255,0,255 };
 	sf::Color _rColor{ 249,255,74,255 };
 
-	Peg peg0;
-	Peg peg1;
-	Peg peg2;
+	Peg _peg0;
+	Peg _peg1;
+	Peg _peg2;
 
 	std::vector<Peg> _pegs;
-
-	std::vector<T> getStackVector(int stackIndex);
 };
 
