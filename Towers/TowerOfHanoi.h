@@ -1,3 +1,4 @@
+// Written (with love) by Lex Whalen
 #pragma once
 
 #include <vector>
@@ -11,10 +12,6 @@ template <class T>
 class TowerOfHanoi
 {
 public:
-
-
-
-
 	// default constructor
 	TowerOfHanoi();
 	// constructor
@@ -50,11 +47,11 @@ public:
 	*/
 	void move(int iFrom, int iTo,bool addToStack);
 
+	// check if you can move from stack iFrom to stack iTo, where iFrom and iTo are the id of stack
+	// ex: can move left, middle: canMove(0,1)
 	bool canMove(int iFrom, int iTo);
 
 	void setTowerInt(int lB, int uB);
-
-
 
 	int getMaxIntVec(std::vector<int> aVec);
 

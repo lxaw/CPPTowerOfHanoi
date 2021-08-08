@@ -1,4 +1,4 @@
-
+// Written (with love) by Lex Whalen
 
 
 /*
@@ -6,9 +6,6 @@ Important: Node class assumes the use of a default constructor.
 If there is none for a class, there will be a "deleted function" error.
 */
 #pragma once
-
-#include <vector>
-#include <string>
 
 #include "SFML/Graphics.hpp"
 #include <SFML/Audio.hpp>
@@ -21,6 +18,7 @@ If there is none for a class, there will be a "deleted function" error.
 int main()
 {
 	sf::SoundBuffer buffer;
+	// shuffle sound
 	buffer.loadFromFile("audio/Electric-Transition-Super-Quick-www.fesliyanstudios.com.wav");
 	sf::Sound disk_sound;
 	disk_sound.setBuffer(buffer);
@@ -39,8 +37,10 @@ int main()
 	unsigned int win_width = size.x;
 	unsigned int win_height = size.y;
 
+	// the background sprite
 	Background bg{ win_width,win_height };
 
+	// the tower 
 	TowerOfHanoiGraphic<Disk> t{1,13, win_width,win_height };
 	
 	sf::Event event;

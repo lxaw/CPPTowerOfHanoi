@@ -1,4 +1,12 @@
+// Written (with love) by Lex Whalen
 #pragma once
+
+/*
+This class represents a single move.
+A move would be in form (fromPegID, toPegID).
+For instance, moving from left to middle: (0,1)
+*/
+
 class Move
 {
 public:

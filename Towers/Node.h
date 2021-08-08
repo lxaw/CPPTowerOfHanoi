@@ -1,3 +1,4 @@
+// Written (with love) by Lex Whalen
 #pragma once
 
 

@@ -1,3 +1,4 @@
+// Written (with love) by Lex Whalen
 #include <iostream>
 #include <cmath>
 

@@ -1,3 +1,4 @@
+// Written (with love) by Lex Whalen
 #include <vector>
 #include <iostream>
 #include <random>
@@ -16,10 +17,6 @@ TowerOfHanoi<T>::TowerOfHanoi() {
 template <class T>
 TowerOfHanoi<T>::TowerOfHanoi(int lB, int uB) {
 	setTowerInt(lB, uB);
-
-	/*
-	To do: throw error if negative
-	*/
 	this->_numDisks = uB - lB + 1;
 }
 
@@ -217,6 +214,7 @@ void TowerOfHanoi<T>::swap(int iFrom, int iTo) {
 }
 
 
+// used from putting a value from one stack to the other
 template<class T>
 void TowerOfHanoi<T>::peekPopPush(Stack<T>& sFrom, Stack<T>& sTo) {
 	if (sFrom.hasMore()) {
@@ -234,6 +232,8 @@ void TowerOfHanoi<T>::pushMove(int iFrom, int iTo) {
 }
 
 
+// used for moving a value
+// ie: move from left to right, move(0,2)
 template <class T>
 void TowerOfHanoi<T>::move(int iFrom, int iTo,bool addToStack) {
 	if (iFrom == iTo) {
@@ -262,6 +262,7 @@ void TowerOfHanoi<T>::move(int iFrom, int iTo,bool addToStack) {
 	}
 }
 
+// checks if fromStack's top element smaller than toStack's top
 template <class T>
 bool checkLessThanStack(Stack<T>& fromStack, Stack<T>& toStack) {
 	
@@ -327,9 +328,6 @@ void TowerOfHanoi<T>::setTowerInt(int lB, int uB) {
 template <class T>
 void TowerOfHanoi<T>::sort(bool print) {
 	// need to move all to left peg
-	/*
-	To do: move all left first
-	*/
 	sort(print, _numDisks, 0,2,1 );
 	if (print) {
 		std::cout << "Sorting complete.\n";
@@ -377,6 +375,32 @@ void TowerOfHanoi<T>::reset(bool print) {
 /*
 Graphical version
 */
+template <class T>
+TowerOfHanoiGraphic<T>::TowerOfHanoiGraphic(int lB, int uB, unsigned int win_w, unsigned int win_h) {
+	this->_lB = lB;
+	this->_uB = uB;
+
+	this->_numDisks = uB - lB + 1;
+
+	_win_w = win_w;
+	_win_h = win_h;
+
+	_peg0 = Peg{ 0, _win_w, _win_h };
+	_peg1 = Peg{ 1, _win_w, _win_h };
+	_peg2 = Peg{ 2, _win_w, _win_h };
+
+	_pegs = { _peg0,_peg1,_peg2 };
+
+	// load font
+	_font.loadFromFile("fonts/8bitOperatorPlus8-Regular.ttf");
+	_text.setFont(_font);
+	updateText();
+	_text.setCharacterSize(24);
+	_text.setFillColor(sf::Color::Black);
+
+	this->setTowerDisk(_peg0, _diskColor);
+
+}
 
 template <class T>
 void TowerOfHanoiGraphic<T>::setTowerDisk(Peg peg,sf::Color color) {
@@ -476,32 +500,7 @@ void TowerOfHanoiGraphic<T>::updateText() {
 	_text.setString(str);
 }
 
-template <class T>
-TowerOfHanoiGraphic<T>::TowerOfHanoiGraphic(int lB, int uB, unsigned int win_w, unsigned int win_h) {
-	this->_lB = lB;
-	this->_uB = uB;
-
-	this->_numDisks = uB - lB + 1;
-
-	_win_w = win_w;
-	_win_h = win_h;
-
-	_peg0 = Peg{ 0, _win_w, _win_h };
-	_peg1 = Peg{ 1, _win_w, _win_h };
-	_peg2 = Peg{ 2, _win_w, _win_h };
-
-	_pegs = { _peg0,_peg1,_peg2 };
-
-	// load font
-	_font.loadFromFile("fonts/8bitOperatorPlus8-Regular.ttf");
-	_text.setFont(_font);
-	updateText();
-	_text.setCharacterSize(24);
-	_text.setFillColor(sf::Color::Black);
-
-	this->setTowerDisk(_peg0, _diskColor);
-
-}
+// this helps reset the keys_pressed if it gets too large
 template <class T>
 bool TowerOfHanoiGraphic<T>::keySizeBig() {
 	if (_keys_pressed.size() >= 2) {
@@ -516,6 +515,7 @@ void TowerOfHanoiGraphic<T>::resetKeys() {
 	_keys_pressed = new_vec;
 }
 
+// this helps check if two entered keys map to some command
 template <class T>
 bool TowerOfHanoiGraphic<T>::isPattern(std::string k1, std::string k2) {
 	if (_keys_pressed.size() != 2) {

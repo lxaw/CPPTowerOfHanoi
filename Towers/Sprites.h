@@ -1,3 +1,4 @@
+// Written (with love) by Lex Whalen
 #pragma once
 
 #include <iostream>
@@ -17,8 +18,6 @@ public:
 	// sfml stuff
 	sf::RectangleShape _rect;
 	sf::Color _color;
-
-	// for positioning
 };
 
 class Peg: public Block
@@ -38,10 +37,12 @@ public:
 	Disk() = default;
 	Disk(int diskID,sf::Color color,Peg peg,int level,unsigned int win_w,unsigned int win_h);
 
+	// level keeps track of the height of disk
 	int _level = 0;
 
 	Peg peg;
 
+	// adjusts the position of a disk on a peg
 	void changePos(Peg newPeg, int level);
 
 	bool operator < (Disk const& aDisk);
@@ -57,6 +58,7 @@ public:
 	
 	sf::Color _color = sf::Color::Black;
 
+	// for printing out the disks
 	inline
 		friend std::ostream& operator << (std::ostream& os, Disk& aDisk) {
 		os << aDisk._diskID;

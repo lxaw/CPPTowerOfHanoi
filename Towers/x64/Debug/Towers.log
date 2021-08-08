@@ -1,2 +1,43 @@
-﻿  Towers.cpp
+﻿  Move.cpp
+  Sprites.cpp
+D:\Desktop\Towers\Towers\Sprites.cpp(24,56): warning C4244: 'argument': conversion from 'unsigned int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Desktop\Towers\Towers\Sprites.cpp(24,48): warning C4244: 'argument': conversion from 'unsigned int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Desktop\Towers\Towers\Sprites.cpp(25,30): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+D:\Desktop\Towers\Towers\Sprites.cpp(25,26): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+D:\Desktop\Towers\Towers\Sprites.cpp(50,56): warning C4244: 'argument': conversion from 'unsigned int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Desktop\Towers\Towers\Sprites.cpp(50,48): warning C4244: 'argument': conversion from 'unsigned int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Desktop\Towers\Towers\Sprites.cpp(52,30): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+D:\Desktop\Towers\Towers\Sprites.cpp(52,26): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+D:\Desktop\Towers\Towers\Sprites.cpp(70,30): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+D:\Desktop\Towers\Towers\Sprites.cpp(70,26): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+D:\Desktop\Towers\Towers\Sprites.cpp(89,56): warning C4244: 'argument': conversion from 'unsigned int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Desktop\Towers\Towers\Sprites.cpp(89,48): warning C4244: 'argument': conversion from 'unsigned int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+  Stack.cpp
+  TowerOfHanoi.cpp
+  Towers.cpp
+  Generating Code...
   Towers.vcxproj -> D:\Desktop\Towers\x64\Debug\Towers.exe
