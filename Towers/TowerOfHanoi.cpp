@@ -310,6 +310,7 @@ bool TowerOfHanoi<T>::canMove(int iFrom, int iTo) {
 	else if (iFrom == 2 && iTo == 1) {
 		return checkLessThanStack(this->_rightStack, this->_middleStack);
 	}
+	return false;
 }
 
 template <class T>
@@ -382,7 +383,34 @@ void TowerOfHanoiGraphic<T>::setTowerDisk(Peg peg,sf::Color color) {
 	// set the left tower
 	for (int i = this->_uB;i >= this->_lB;--i) {
 		int level = _uB - i;
-		this->_leftStack.push(Disk{ i,color,peg,level,this->_numDisks,this->_win_w,this->_win_h });
+		// have to push the bigger disks before the smaller
+		this->_leftStack.push(Disk{ i,color,peg,level,this->_win_w,this->_win_h });
+	}
+}
+
+template <class T>
+void TowerOfHanoiGraphic<T>::changeTopDiskColor(int stackID,sf::Color color) {
+	// select the top disk from stack, change color
+	if (stackID == 0 && this->_leftStack._top != nullptr) {
+		this->_leftStack._top->_data._rect.setFillColor(color);
+	}
+	else if (stackID == 1 && this->_middleStack._top != nullptr) {
+		this->_middleStack._top->_data._rect.setFillColor(color);
+	}
+	else if (stackID == 2 && this->_rightStack._top != nullptr) {
+		this->_rightStack._top->_data._rect.setFillColor(color);
+	}
+}
+template <class T>
+void TowerOfHanoiGraphic<T>::resetAllTopDiskColor() {
+	if (this->_leftStack._top != nullptr) {
+		this->_leftStack._top->_data._rect.setFillColor(this->_diskColor);
+	}
+	if (this->_middleStack._top != nullptr) {
+		this->_middleStack._top->_data._rect.setFillColor(this->_diskColor);
+	}
+	if (this->_rightStack._top != nullptr) {
+		this->_rightStack._top->_data._rect.setFillColor(this->_diskColor);
 	}
 }
 
@@ -392,41 +420,60 @@ void TowerOfHanoiGraphic<T>::moveDisk(int fromPeg, int toPeg) {
 		return;
 	}
 	else if (fromPeg == 0 && toPeg == 1) {
-		int new_level = this->_middleStack._elements;
-		// move the disk
-		this->_leftStack._top->_data.changePos(this->_peg1, new_level);
-		this->move(0, 1,true);
+		if (this->canMove(0, 1)) {
+			int new_level = this->_middleStack._elements;
+			// move the disk
+			this->_leftStack._top->_data.changePos(this->_peg1, new_level);
+			this->move(0, 1,true);
+		}
 	}
 	else if (fromPeg == 0 && toPeg == 2) {
-		int new_level = this->_rightStack._elements;
-		// move the disk
-		this->_leftStack._top->_data.changePos(this->_peg2, new_level);
-		this->move(0, 2,true);
+		if (this->canMove(0, 2)) {
+			int new_level = this->_rightStack._elements;
+			// move the disk
+			this->_leftStack._top->_data.changePos(this->_peg2, new_level);
+			this->move(0, 2,true);
+		}
 	}
 	else if (fromPeg == 1 && toPeg == 0) {
-		int new_level = this->_leftStack._elements;
-		// move the disk
-		this->_middleStack._top->_data.changePos(this->_peg0, new_level);
-		this->move(1,0,true);
+		if (this->canMove(1, 0)) {
+			int new_level = this->_leftStack._elements;
+			// move the disk
+			this->_middleStack._top->_data.changePos(this->_peg0, new_level);
+			this->move(1,0,true);
+		}
 	}
 	else if (fromPeg == 1 && toPeg == 2) {
-		int new_level = this->_rightStack._elements;
-		// move the disk
-		this->_middleStack._top->_data.changePos(this->_peg2, new_level);
-		this->move(1,2,true);
+		if (this->canMove(1, 2)) {
+			int new_level = this->_rightStack._elements;
+			// move the disk
+			this->_middleStack._top->_data.changePos(this->_peg2, new_level);
+			this->move(1,2,true);
+		}
 	}
 	else if (fromPeg == 2 && toPeg == 0) {
-		int new_level = this->_leftStack._elements;
-		// move the disk
-		this->_rightStack._top->_data.changePos(this->_peg0, new_level);
-		this->move(2,0,true);
+		if (this->canMove(2, 0)) {
+			int new_level = this->_leftStack._elements;
+			// move the disk
+			this->_rightStack._top->_data.changePos(this->_peg0, new_level);
+			this->move(2,0,true);
+		}
 	}
 	else if (fromPeg == 2 && toPeg == 1) {
-		int new_level = this->_middleStack._elements;
-		// move the disk
-		this->_rightStack._top->_data.changePos(this->_peg1, new_level);
-		this->move(2,1,true);
+		if (this->canMove(2, 1)) {
+			int new_level = this->_middleStack._elements;
+			// move the disk
+			this->_rightStack._top->_data.changePos(this->_peg1, new_level);
+			this->move(2,1,true);
+		}
 	}
+	this->updateText();
+}
+
+template <class T>
+void TowerOfHanoiGraphic<T>::updateText() {
+	std::string str = "\n\n\nTotal moves: " + std::to_string(this->_moves._elements) + "\n Optimal move count: " + std::to_string(std::pow(2,(this->_numDisks))-1);
+	_text.setString(str);
 }
 
 template <class T>
@@ -445,6 +492,84 @@ TowerOfHanoiGraphic<T>::TowerOfHanoiGraphic(int lB, int uB, unsigned int win_w, 
 
 	_pegs = { _peg0,_peg1,_peg2 };
 
-	this->setTowerDisk(_peg0, sf::Color::Blue);
+	// load font
+	_font.loadFromFile("fonts/8bitOperatorPlus8-Regular.ttf");
+	_text.setFont(_font);
+	updateText();
+	_text.setCharacterSize(24);
+	_text.setFillColor(sf::Color::Black);
+
+	this->setTowerDisk(_peg0, _diskColor);
 
 }
+template <class T>
+bool TowerOfHanoiGraphic<T>::keySizeBig() {
+	if (_keys_pressed.size() >= 2) {
+		return true;
+	}
+	return false;
+}
+
+template <class T>
+void TowerOfHanoiGraphic<T>::resetKeys() {
+	std::vector<std::string> new_vec;
+	_keys_pressed = new_vec;
+}
+
+template <class T>
+bool TowerOfHanoiGraphic<T>::isPattern(std::string k1, std::string k2) {
+	if (_keys_pressed.size() != 2) {
+		return false;
+	}
+	else if (k1 == _keys_pressed[0] && k2 == _keys_pressed[1]) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+template <class T>
+void TowerOfHanoiGraphic<T>::resetDisks() {
+	while (this->_moves.hasMore()) {
+		Move t = this->_moves.peek();
+
+		int from = t._moveArr[1];
+		int to = t._moveArr[0];
+
+		moveDisk(from, to);
+		this->_moves.pop();
+	}
+	this->updateText();
+}
+
+template <class T>
+void TowerOfHanoiGraphic<T>::printKeyVec() {
+	if (_keys_pressed.size() == 0) {
+		return;
+	}
+	else {
+		std::cout << "keys pressed: ";
+		for (auto k : _keys_pressed) {
+			std::cout << k << " ";
+		}
+		std::cout << "\n";
+	}
+}
+
+template <class T>
+void TowerOfHanoiGraphic<T>::sortDisks() {
+	this->sortDisks(this->_numDisks, 0, 2, 1);
+
+	this->updateText();
+}
+template <class T>
+void TowerOfHanoiGraphic<T>::sortDisks(int numDisks, int fromI, int toI, int auxI) {
+	if (numDisks > 0) {
+		this->sortDisks(numDisks - 1, fromI, auxI, toI);
+		this->moveDisk(fromI, toI);
+		
+		sortDisks(numDisks - 1, auxI, toI, fromI);
+	}
+}
+

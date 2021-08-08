@@ -5,12 +5,16 @@
 #include "Stack.h"
 #include "Move.h"
 #include "Sprites.h"
-#include "Sprites.h"
+
 
 template <class T>
 class TowerOfHanoi
 {
 public:
+
+
+
+
 	// default constructor
 	TowerOfHanoi();
 	// constructor
@@ -88,11 +92,34 @@ public:
 
 	void setTowerDisk(Peg peg,sf::Color color);
 
+	sf::Color _selectColor = sf::Color::Red;
+	sf::Color _diskColor = sf::Color::Blue;
+
+	sf::Font _font;
+	sf::Text _text;
+
+	void updateText();
+
 
 	unsigned int _win_w;
 	unsigned int _win_h;
 
 	void moveDisk(int fromPeg, int toPeg);
+
+	std::vector<std::string> _keys_pressed;
+
+	bool keySizeBig();
+	bool isPattern(std::string k1, std::string k2);
+	void resetKeys();
+
+
+	void changeTopDiskColor(int stackID,sf::Color color);
+	void resetAllTopDiskColor();
+
+	void resetDisks();
+
+	void printKeyVec();
+
 
 	sf::Color _lColor{ 255,0,0,255 };
 	sf::Color _mColor{ 0,255,0,255 };
@@ -102,6 +129,13 @@ public:
 	Peg _peg1;
 	Peg _peg2;
 
+	void sortDisks();
+
 	std::vector<Peg> _pegs;
+
+private:
+	// recursive sort
+	void sortDisks(int numDisks, int fromI, int toI,int auxI);
+
 };
 

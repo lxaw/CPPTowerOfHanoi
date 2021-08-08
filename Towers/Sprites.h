@@ -2,16 +2,17 @@
 
 #include <iostream>
 #include "SFML/Graphics.hpp"
+#include <SFML/Audio.hpp>
 
 #include "Stack.h"
 
 class Block
 {
 public:
-	unsigned int _width;
-	unsigned int _height;
-	unsigned int _x;
-	unsigned int _y;
+	unsigned int _width = 0;
+	unsigned int _height = 0;
+	unsigned int _x = 0;
+	unsigned int _y = 0;
 
 	// sfml stuff
 	sf::RectangleShape _rect;
@@ -35,7 +36,9 @@ class Disk :public Block
 {
 public:
 	Disk() = default;
-	Disk(int diskID,sf::Color color,Peg peg,int level,int max_level,unsigned int win_w,unsigned int win_h);
+	Disk(int diskID,sf::Color color,Peg peg,int level,unsigned int win_w,unsigned int win_h);
+
+	int _level = 0;
 
 	Peg peg;
 
@@ -46,13 +49,12 @@ public:
 
 	unsigned int _win_w = 0;
 	unsigned int _win_h = 0;
-	int _max_level = -1;
 
 	unsigned int _x = 0;
 	unsigned int _y = 0;
 
 	int _diskID = -1;
-
+	
 	sf::Color _color = sf::Color::Black;
 
 	inline
@@ -66,5 +68,7 @@ class Background :public Block
 {
 public:
 	Background(unsigned int win_w, unsigned int win_h);
+	sf::Font _font;
+	sf::Text _text;
 };
 

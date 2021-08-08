@@ -11,32 +11,27 @@ If there is none for a class, there will be a "deleted function" error.
 #include <string>
 
 #include "SFML/Graphics.hpp"
+#include <SFML/Audio.hpp>
 
 #include "TowerOfHanoi.h"
 #include "TowerOfHanoi.cpp"
 
 
-std::vector<std::string> checkKeys(std::vector<std::string> key_vector) {
-	if (key_vector.size() > 2) {
-		std::vector<std::string> new_vec;
-		return new_vec;
-	}
-	return key_vector;
-}
-bool isPattern(std::string key1, std::string key2, std::vector<std::string> key_vector) {
-	if (key_vector.size() != 2) {
-		return false;
-	}
-	if (key1 == key_vector[0] && key2 == key_vector[1]) {
-		return true;
-	}
-	return false;
-}
 
 int main()
 {
+	sf::SoundBuffer buffer;
+	buffer.loadFromFile("audio/Electric-Transition-Super-Quick-www.fesliyanstudios.com.wav");
+	sf::Sound disk_sound;
+	disk_sound.setBuffer(buffer);
 
-	sf::RenderWindow window(sf::VideoMode(800, 600), "Tower of Hanoi");
+	// music
+	sf::Music music;
+	music.openFromFile("audio/2020-04-24_-_Arcade_Kid_-_FesliyanStudios.com_-_David_Renda.wav");
+	music.setLoop(true);
+	music.play();
+
+	sf::RenderWindow window(sf::VideoMode(800, 800), "Tower of Hanoi");
 	window.setFramerateLimit(60);
 
 
@@ -46,11 +41,9 @@ int main()
 
 	Background bg{ win_width,win_height };
 
-	TowerOfHanoiGraphic<Disk> t{1,9, win_width,win_height };
+	TowerOfHanoiGraphic<Disk> t{1,13, win_width,win_height };
 	
 	sf::Event event;
-
-	std::vector<std::string> keys_pressed;
 
 
 	while (window.isOpen()) {
@@ -58,53 +51,93 @@ int main()
 			switch (event.type) {
 
 			case sf::Event::EventType::KeyPressed:
-				t.printTowerOfHanoi();
+				// reset all disk colors
+				t.resetAllTopDiskColor();
 				if (event.key.code == sf::Keyboard::A) {
-					keys_pressed.push_back("a");
-					keys_pressed = checkKeys(keys_pressed);
+					t._keys_pressed.push_back("a");
+					if (t._keys_pressed.size() == 1) {
+						t.changeTopDiskColor(0,sf::Color::Red);
+					}
+					t.printKeyVec();
 				}
 				else if (event.key.code == sf::Keyboard::S) {
-					keys_pressed.push_back("s");
-					keys_pressed = checkKeys(keys_pressed);
+					t._keys_pressed.push_back("s");
+					if (t._keys_pressed.size() == 1) {
+						t.changeTopDiskColor(1,sf::Color::Red);
+					}
+					t.printKeyVec();
 				}
 				else if (event.key.code == sf::Keyboard::D) {
-					keys_pressed.push_back("d");
-					keys_pressed = checkKeys(keys_pressed);
+					t._keys_pressed.push_back("d");
+					if (t._keys_pressed.size() == 1) {
+						t.changeTopDiskColor(2,sf::Color::Red);
+					}
+					t.printKeyVec();
 				}
 
-				if (isPattern("a", "s", keys_pressed)) {
+				if (t.isPattern("a", "s")) {
 					if (t.canMove(0, 1)) {
+						// change color back
+						t.changeTopDiskColor(0,sf::Color::Blue);
 						t.moveDisk(0, 1);
+						// play sound
+						disk_sound.play();
+						// reset keys
+						t.resetKeys();
 					}
 				}
-				else if (isPattern("a", "d", keys_pressed)) {
+				else if (t.isPattern("a", "d")) {
 					if (t.canMove(0, 2)) {
+						t.changeTopDiskColor(0,sf::Color::Blue);
 						t.moveDisk(0, 2);
+						disk_sound.play();
+						t.resetKeys();
 					}
 				}
-				else if (isPattern("s", "a", keys_pressed)) {
+				else if (t.isPattern("s", "a")) {
 					if (t.canMove(1, 0)) {
+						t.changeTopDiskColor(1,sf::Color::Blue);
 						t.moveDisk(1, 0);
+						disk_sound.play();
+						t.resetKeys();
 					}
 				}
-				else if (isPattern("s", "d", keys_pressed)) {
+				else if (t.isPattern("s", "d")) {
 					if (t.canMove(1,2)) {
+						t.changeTopDiskColor(1,sf::Color::Blue);
 						t.moveDisk(1,2);
+						disk_sound.play();
+						t.resetKeys();
 					}
 				}
-				else if (isPattern("d", "a", keys_pressed)) {
+				else if (t.isPattern("d", "a")) {
 					if (t.canMove(2,0)) {
+						t.changeTopDiskColor(2,sf::Color::Blue);
 						t.moveDisk(2,0);
+						disk_sound.play();
+						t.resetKeys();
 					}
 				}
-				else if (isPattern("d", "s", keys_pressed)) {
+				else if (t.isPattern("d", "s")) {
 					if (t.canMove(2,1)) {
+						t.changeTopDiskColor(2,sf::Color::Blue);
 						t.moveDisk(2,1);
+						disk_sound.play();
+						t.resetKeys();
 					}
+				}
+				else if (event.key.code == sf::Keyboard::R) {
+					t.resetDisks();
+				}
+				else if (event.key.code == sf::Keyboard::V) {
+					t.sortDisks();
 				}
 				else if (event.key.code == sf::Keyboard::Escape) {
-					std::vector<std::string> reset;
-					keys_pressed = reset;
+					t.resetKeys();
+				}
+				else if (event.key.code == sf::Keyboard::Q) {
+					// quit
+					window.close();
 				}
 
 
@@ -116,12 +149,22 @@ int main()
 				break;
 			}
 		}
+
+		// clear keys if too large
+		if (t.keySizeBig()) {
+			t.resetKeys();
+		}
+
 		// clear window
 		window.clear();
 
 
 		// draw background
 		window.draw(bg._rect);
+		window.draw(bg._text);
+
+		// draw moves
+		window.draw(t._text);
 
 		// print pegs
 		for (auto peg : t._pegs) {
